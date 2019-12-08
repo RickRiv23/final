@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> </title>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        
+        <script>
+            
+        //   $(document).ready(function() {
+                
+                
+        //             $("#dataButton").on("click", function(){
+                        
+        //                 //alert("works!");
+                        
+        //                 $.ajax({
+                        
+        //                       method: "post",
+        //                          url: "/loginProcess",
+        //                     dataType: "json",
+        //                         data: { "username":$("#username").val(),
+        //                                 "password":$("#password").val() },
+        //                      success: function(result,status) {
+        //                         //alert(result);
+        //                         if (!result) {
+                                    
+        //                             alert("Wrong credentials!");
+                                    
+        //                         } else {
+                                    
+        //                             location.href = "/dataTest"; //redirects to admin route
+        //                             console.log(result)
+                                    
+        //                         }
+        //                     }
+                            
+        //                 });//ajax
+                        
+        //             });//click
+                
+        //         }); //document.ready
+            
+            
+        </script>
+        
+        
+    </head>
+    <body>
+        
+        
+        
+       
+        
+            <h3>Heroes:</h3>
+            <% heroeList.forEach(function(heroes){  %>
+            
+            <%= heroes.name %> <%= heroes.alias %> <%= heroes.universe %> <%= heroes.group %> <br> <br>
+            
+         <% }) %>
+        
+        <h1> Admin Section </h1>
+
+        <form action="/addHeroes">
+          <button> Add New Hero </button>
+        </form>
+        
+     
+      
+        
+       
+    </body>
+</html>

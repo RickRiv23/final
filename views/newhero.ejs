@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> </title>
+    </head>
+    <body>
+
+        <h1> Adding a New Hero </h1>
+        
+
+        <form method="POST">
+        
+            Name: <input type="text" name="name"><br>    
+            Alias: <input type="text" name="alias"><br>    
+            Gender: <input type="radio" name="gender" value="F">Female
+                    <input type="radio" name="gender" value="M">Male
+                    <br>
+            <!--Group: <input type="text" name="group"><br>    -->
+            <!--Universe: <input type="text" name="universe"><br>    -->
+            <!--TODO: Add the remaining fields -->
+           <br>
+            <button>Add Hero</button>
+        
+            <%= typeof(message) != "undefined"?message:"" %>
+            
+        </form>        
+
+        
+    </body>
+</html>
