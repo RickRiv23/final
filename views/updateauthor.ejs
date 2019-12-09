@@ -21,7 +21,13 @@
                        <%= authorInfo.sex == 'M'?"checked":"" %>
                     >Male
                     
-            <input type="hidden" name="authorId" value="<%= authorInfo.authorId %>"> 
+            <input type="hidden" name="authorId" value="<%= authorInfo.authorId %>" > 
+            
+            <input type="text" name="imageURL" value="<%= authorInfo.authorId %>" >
+            <br>
+            <figure>
+                <img src="<%= authorInfo.authorId %>" alt="Hero Image May Not be Available" >
+            </figure>
             
             <!--TODO: Add the remaining fields -->
             <br><br>

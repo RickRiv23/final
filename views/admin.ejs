@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> </title>
-        
+        <title> Admin Console </title>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+        <link rel="stylesheet" href="/styles.css" type="text/css" />
         
         <script>
             
@@ -53,12 +53,33 @@
         
        
         
-            <h3>Heroes:</h3>
-            <% heroeList.forEach(function(heroes){  %>
+        <h3>Heroes:</h3>
+         
+        <div class="flex-container">
+            <% heroeList.forEach(function(hero){  %>
             
-            <%= heroes.name %> <%= heroes.alias %> <%= heroes.universe %> <%= heroes.group %> <br> <br>
+            <div class="hero-container js-select-hero">
+                <figure>
+                    <img class="thumbnail-img" src="<%= hero.imageURL %>" alt="Hero Image"/>
+                    <figcaption>
+                        <!--<a href="/updateAuthor?authorId=<%= %>">
+                            [UPDATE]
+                        </a>
+                        <a onclick="deleteConfirm()" class="removeAuthor" href="/deleteAuthor?authorId=<%=  %>">
+                            [DELETE]
+                        </a> 
+                        <br>-->
+                        <p>Hero: <%= hero.name %></p>
+                        <p>Alias: <%= hero.alias %></p>
+                        <p>Universe: <%= hero.universe %></p>
+                        <p>Group: <%= hero.group %></p>
+                    </figcaption>
+                    <br>
+                </figure>
+            </div>
             
-         <% }) %>
+            <% }) %>
+        </div>
         
         <h1> Admin Section </h1>
 
@@ -67,8 +88,36 @@
         </form>
         
      
-      
+      <!-- Modal -->
+        <div class="modal fade" id="heroModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><h1 id="heroName"></h1></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                
+                 <div>
+                     <figure>
+                        <img id="heroImg" src="">
+                        <figcaption>
+                            <h1 id="heroName"></h1>
+                            <p id="bio"></p>
+                        </figcaption>
+                    </figure>
+                </div>
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
         
-       
+       <script type="text/javascript" src="/scripts.js"></script>
     </body>
 </html>

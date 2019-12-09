@@ -1,0 +1,29 @@
+.flex-container{
+    width: 80%;
+    margin: 0px auto;
+    display: inline-flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.hero-container{
+    width: 200px;
+    background-color: grey;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.thumbnail-img{
+    width: 100%;
+}
+
+figcaption, figure{
+    margin: 0px auto;
+    width: 100%;
+}
+a, a:visited{
+    color: white;
+    text-decoration: none;
+}

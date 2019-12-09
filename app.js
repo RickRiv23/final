@@ -74,6 +74,13 @@ app.post("/addHeroes", async function(req, res){
     
 });
 
+
+app.get("/ajax/getHero", async function(req, res){
+    let rows = await getAuthorInfo(req.query.authorId);
+    console.log("Hero Info ")
+    res.send(rows);
+});
+
 // app.get("/dataTest", async function(req, res){
     
 //   console.log("authenticated: ", req.session.authenticated);    
@@ -90,6 +97,29 @@ app.post("/addHeroes", async function(req, res){
    
 //   }
 // });
+
+function getHeroInfo(heroID){
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *
+                        FROM heroes`;
+        
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promis
+    
+}
 
 function getSuperheroes(){
    
