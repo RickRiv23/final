@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+        <body>
+             <h1> Superheroes Found: </h1>
+             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
+             
+
+             <script>
+             $(document).ready(function(){
+                 //alert("testing .ready");
+                     $("a").on("click",function(){
+                         //alert("works?");
+                         $.ajax({
+                                
+                                method: "GET",
+                                url: "/authorInfo?=",
+                                dataType: "json",
+                                data: { "authorId": $(this).attr("id")},
+                                success: function(result,status) {
+                                //alert(result.[0].firstName);
+                                    $("#authorName").html(result[0].firstName +" " + result[0].lastName);
+                                    $("#bio").html(result[0].biography);
+                                    $('#authorModal').modal("show");
+                                    $('#pic').attr(result[0].portrait);
+                                     }
+                                
+                            });//ajax
+                            
+                     })//anchor click function
+             });//document ready close
+                     
+             </script>
+             
+             <!--loop through array// only need "=" for displaying-->
+             
+             <% records.forEach( function(record){ %>
+             
+                    <i><%= record.quote %> </i><br>
+                    <!--<a></a>: anchor for links-->
+                   <a href = "#"  id="<%=record.authorId%>" >-<%= record.firstName %> <%= record.lastName %> </a>
+                   <br><br>
+            
+          <% }) %>
+          
+         
+          
+          
+          <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="authorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Biography of</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div>
+              <h1 id= "authorName"></h1>
+              <p id="bio"></p>
+              <p id="pic"></p>
+              
+              
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+           
+
+       </body>
+</html>

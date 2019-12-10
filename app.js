@@ -25,8 +25,16 @@ app.get("/", async function(req, res){
     res.render("index", {"heroesList":heroesList});
 });
 
+//login route
 app.get("/login", function(req, res){
    res.render("login");
+});
+
+//logout route
+app.get("/logout", function(req, res){
+   // console.log("logging")
+   res.session.destroy();
+   res.redirect("/");
 });
 
 app.get("/admin", async function(req, res){

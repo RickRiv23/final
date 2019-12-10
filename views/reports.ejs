@@ -1,0 +1,31 @@
+<!--//Administrators can generate at least three reports,-->
+<!--//which use aggregate functions (e.g., average price of all products in the table)	-->
+
+<!--number of heroes-->
+
+ <div class="flex-container">
+            <% heroesList.forEach(function(hero){  %>
+            
+            
+            <div class="hero-container js-select-hero" id="<%= hero.heroId %>">
+                <figure>
+                    <img class="thumbnail-img" src="<%= hero.imageURL %>" alt="Hero Image"/>
+                    <figcaption>
+                        <!--<a href="/updateAuthor?authorId=<%= %>">
+                            [UPDATE]
+                        </a>
+                        <a onclick="deleteConfirm()" class="removeAuthor" href="/deleteAuthor?authorId=<%=  %>">
+                            [DELETE]
+                        </a> 
+                        <br>-->
+                        <p>Number of Heroes: <%= hero.heroId %></p>
+                        <p>Alias: <%= hero.alias %></p>
+                        <p>Universe: <%= hero.universe %></p>
+                        <p>Group: <%= hero.group %></p>
+                    </figcaption>
+                    <br>
+                </figure>
+            </div>
+            
+            <% }) %>
+        </div>
