@@ -46,6 +46,15 @@ app.get("/logout", function(req, res){
    res.redirect("/");
 });
 
+//reports route
+app.get("/reports", async function(req, res){
+    let heroesList = await getSuperheroesDESC();
+    console.log("going into reports.ejs")
+    
+    
+   res.render("reports", {"heroesList":heroesList});
+});
+
 app.get("/admin", async function(req, res){
     
    console.log("authenticated: ", req.session.authenticated);    
@@ -143,13 +152,16 @@ function updateHero(body){
           console.log("Connected!");
         
           let sql = `UPDATE heroes
-                      SET name   = ?, 
-                          alias  = ?, 
+                      SET name   = ?,
+                          alias  = ?,
                           gender = ?,
-                          group  = ?
-                     WHERE authorId = ?`;
+                          group  = ?,
+                        universe = ?,
+                        imageURL = ?,
+                        information = ?
+                    WHERE heroId = ?`;
         
-          let params = [body.name, body.alias, body.gender, body.group, body.heroId];
+          let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information, body.heroId];
         
           console.log(sql);
            
@@ -294,6 +306,30 @@ function getSuperheroes(){
            let sql = `SELECT *
                         FROM heroes`;
         
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function getSuperheroesDESC(){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *
+                        FROM heroes
+                        ORDER BY heroId DESC LIMIT 1`;
+
            conn.query(sql, function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
