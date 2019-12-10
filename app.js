@@ -82,7 +82,6 @@ app.post("/addHeroes", async function(req, res){
     
 });
 
-
 app.get("/ajax/getHero", async function(req, res){
     let rows = await getHeroInfo(req.query.heroId);
     console.log("Get Hero Info ")
@@ -228,8 +227,6 @@ function insertHero(body){
         });//connect
     });//promise 
 }
-
-
 
 function dbConnection(){
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> </title>
+    </head>
+    <body>
+
+        <h1> Updating Hero </h1>
+        
+
+        <form method="POST">
+        
+            Name: <input type="text" name="name"
+                        value="<%= heroInfo.name %>"><br>    
+            Alias: <input type="text" name="alias"
+                        value="<%= authorInfo.alias %>"><br>    
+            Gender: <input type="radio" name="gender" value="F" 
+                         <%= heroInfo.sex == 'F'?"checked":"" %>
+                        >Female
+                    <input type="radio" name="gender" value="M"
+                       <%= heroInfo.sex == 'M'?"checked":"" %>
+                    >Male
+                    
+            <input type="hidden" name="heroId" value="<%= heroInfo.heroId %>" > 
+            
+            <input type="text" name="imageURL" value="<%= heroInfo.heroId %>" >
+            <br>
+            <figure>
+                <img src="<%= heroInfo.heroId %>" alt="Hero Image May Not be Available" >
+            </figure>
+            
+            <!--TODO: Add the remaining fields -->
+            <br><br>
+            <button>Update Hero</button>
+        
+            <%= typeof(message) != "undefined"?message:"" %>
+            
+        </form>        
+
+        
+    </body>
+</html>
