@@ -28,6 +28,7 @@
                         <p>Alias: <%= hero.alias %></p>
                         <p>Universe: <%= hero.universe %></p>
                         <p>Group: <%= hero.group %></p>
+                        [<a href="/updateHero?heroId=<%= hero.heroId %>">UPDATE</a>]
                     </figcaption>
                     <br>
                 </figure>
@@ -41,10 +42,22 @@
         <form action="/addHeroes">
           <button> Add New Hero </button>
         </form>
-        <form action="/updateHero">
-            <button> Update Existing Hero</button>
+<<<<<<< HEAD
+=======
+        
+        <!--logout button-->
+        <form action="/">
+            <button>
+                Logout
+            </button>
         </form>
-     
+     <!--generate report   -->
+         <form action="/reports">
+            <button>
+                Report
+            </button>
+        </form>
+>>>>>>> dc1f2f859e13f1842c59b8aed30eaa421392cf26
       <!-- Modal -->
         <div class="modal fade" id="heroModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
