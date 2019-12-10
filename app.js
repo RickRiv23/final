@@ -26,6 +26,14 @@ app.get("/", async function(req, res){
     res.render("index", {"heroesList":heroesList});
 });
 
+app.get("/search", async function(req, res){
+    let heroesList = await getSuperheroes();
+    
+    console.log("Grabbing heroes");
+    
+    res.render("index", {"heroesList":heroesList});
+});
+
 //login route
 app.get("/login", function(req, res){
    res.render("login");
