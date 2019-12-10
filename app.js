@@ -18,7 +18,11 @@ app.use(session({ secret: 'any word', cookie: { maxAge: 60000 }}))
 
 //routes
 app.get("/", async function(req, res){
-    res.render("index");
+    let heroesList = await getSuperheroes();
+    
+    console.log("Grabbing heroes");
+    
+    res.render("index", {"heroesList":heroesList});
 });
 
 app.get("/login", function(req, res){
@@ -31,9 +35,9 @@ app.get("/admin", async function(req, res){
    
    if (req.session.authenticated) { //if user hasn't authenticated, sending them to login screen
        
-       let heroeList = await getSuperheroes();  
-       console.log(heroeList);
-       res.render("admin", {"heroeList":heroeList});  
+       let heroesList = await getSuperheroes();  
+       console.log(heroesList);
+       res.render("admin", {"heroesList":heroesList});  
        
     // let authorList = await getAuthorList();  
        //console.log(authorList);
@@ -86,7 +90,8 @@ app.get("/ajax/getHero", async function(req, res){
 });
 
 app.get("/ajax/searchHero", async function(req, res){
-    let rows = await getHeroInfo(req.query);
+    console.log("Trying to search heroes");
+    let rows = await searchHeroes(req.query);
     console.log("Searched Heroes ")
     res.send(rows);
 });
@@ -149,25 +154,20 @@ function searchHeroes(query){
                 NATURAL JOIN hero_history
                 NATURAL JOIN hero_prices
                 WHERE
-                (name OR alias LIKE '%${keyword}%'`;
+                (name LIKE '%${keyword}%'`;
             
-            if (query.category) { //user selected a category
-                sql += " AND category = '" + query.category +"'"; //To prevent SQL injection, SQL statement shouldn't have any quotes.
+            if (query.universe) { //user selected a universe
+                sql += " AND universe = '" + query.universe +"'"; //To prevent SQL injection, SQL statement shouldn't have any quotes.
             }
             
             if (query.gender) { //user selected a sex
-                sql += " AND sex = '" + query.gender +"'"; //To prevent SQL injection, SQL statement shouldn't have any quotes.
-            }
-            
-            if (query.authorId) { //user selected a sex
-                sql += " AND authorId = " + query.authorId; //To prevent SQL injection, SQL statement shouldn't have any quotes.
+                sql += " AND gender = '" + query.gender +"'"; //To prevent SQL injection, SQL statement shouldn't have any quotes.
             }
             
             sql += ")";
             
-            params.push(query.category);
+            params.push(query.universe);
             params.push(query.gender);
-            params.push(query.authorId);
             
             conn.query(sql, params, function (err, rows, fields) {
             if (err) throw err;

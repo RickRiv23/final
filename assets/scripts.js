@@ -12,7 +12,7 @@ function selectHero(searchID){
           $("#heroName").html(result[0].name);
           $("#group").html(result[0].group);
           $("#heroImg").attr("src", result[0].imageURL);
-          $('#heroModal').show();
+          $('#heroModal').modal("show");
           
         }
 
@@ -21,7 +21,7 @@ function selectHero(searchID){
 
 function searchHeroes(){
     let keyword = $("#searchTerm").val() ? $("#searchTerm").val() : "";
-    let category = $("#searchCategory").val() ? $("#searchCategory").val() : "";
+    let universe = $("#searchUniverse").val() ? $("#searchUniverse").val() : "";
     let gender = $("#searchGender").val() ? $("#searchGender").val() : "";
     let author = $("#searchAuthor").val() ? $("#searchAuthor").val() : "";
     $.ajax({
@@ -30,42 +30,49 @@ function searchHeroes(){
         dataType: "json",
         data:{
             "searchTerm": keyword,
-            "category": category,
+            "universe": universe,
             "gender": gender,
             "authorId": author
         },
         success: function(data){
             // alert(JSON.stringify(data));
-            $(".js-quotes").html("");       //  Clear quotes
+            $(".js-heroes-container").html("");       //  Clear quotes
             if(data != ""){
-                let quotes = buildQuotes(data);
-                printQuotes(quotes);
+                let heroes = buildCells(data);
+                printCells(heroes);
             }
             else
-                $(".js-quotes").html("<p>No Quotes Found</p>");
+                $(".js-heroes-container").html("<p>No Heroes Found</p>");
         }
     });
 }
 
-function buildQuotes(quotes){
-    let createdQuotes = [];
+function buildCells(heroes){
+    let createdCells = [];
     
-    for(let i = 0; i < quotes.length; i++){
-        createdQuotes[i] = `
-            <div class="quote-wrapper">
-                <i>${quotes[i].quote}"</i> <br>
-                <a href="#" class="js-select-quote" id="${quotes[i].authorId}">-${quotes[i].firstName} ${quotes[i].lastName} </a>
+    for(let i = 0; i < heroes.length; i++){
+        createdCells[i] = `
+            <div class="hero-container js-select-hero" id="${heroes[i].heroId}">
+                <figure>
+                    <img class="thumbnail-img" src="${heroes[i].imageURL}" alt="Hero Image"/>
+                    <figcaption>
+                        <p>Hero: ${heroes[i].name}</p>
+                        <p>Alias: ${heroes[i].alias}</p>
+                        <p>Universe: ${heroes[i].universe}</p>
+                        <p>Group: ${heroes[i].group}</p>
+                    </figcaption>
+                    <br>
+                </figure>
             </div>
-            <br><br>
         `;
     }
     
-    return createdQuotes;
+    return createdCells;
 }
 
-function printQuotes(quotes){
+function printCells(heroes){
     // quotes.forEach( function(i, quote){
-        $(".js-quotes").append(quotes);
+        $(".js-heroes-container").append(heroes);
     // });
 }
 

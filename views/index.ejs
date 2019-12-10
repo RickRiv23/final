@@ -14,16 +14,11 @@
                 Keyword: <input id="searchTerm" name="searchTerm" type="text" >
             </label>
             <label>
-                Author: 
-                <select id="searchAuthor" name="author">
+                Universe: 
+                <select id="searchUniverse" name="universe">
                     <option value=""> Select One </option>
-                    
-                    <% authors.forEach(function(i){ %>
-                    
-                        <option value="<%=i.authorId%>"> <%=i.firstName%> <%=i.lastName%> </option>
-                    
-                    <% }); %>
-                    
+                    <option value="Marvel"> Marvel </option>
+                    <option value="DC"> DC </option>
                 </select>
             </label>
             <label>
@@ -34,37 +29,17 @@
                     <option value="F"> Female </option>
                 </select>
             </label>
-            <label>
-                Category: 
-                <select id="searchCategory" name="category">
-                    <option value=""> Select One </option>
-                    
-                    <% categories.forEach(function(i){ %>
-                    
-                        <option value="<%=i.category%>"> <%=i.category%>  </option>
-                    
-                    <% }); %>
-                    
-                </select>
-            </label>
             <input class="js-search-btn" type='submit' value='Search'>
         </form>
          
         <div class="flex-container js-heroes-container">
-            <% heroeList.forEach(function(hero){  %>
+            <% heroesList.forEach(function(hero){  %>
             
             
             <div class="hero-container js-select-hero" id="<%= hero.heroId %>">
                 <figure>
                     <img class="thumbnail-img" src="<%= hero.imageURL %>" alt="Hero Image"/>
                     <figcaption>
-                        <!--<a href="/updateAuthor?authorId=<%= %>">
-                            [UPDATE]
-                        </a>
-                        <a onclick="deleteConfirm()" class="removeAuthor" href="/deleteAuthor?authorId=<%=  %>">
-                            [DELETE]
-                        </a> 
-                        <br>-->
                         <p>Hero: <%= hero.name %></p>
                         <p>Alias: <%= hero.alias %></p>
                         <p>Universe: <%= hero.universe %></p>
