@@ -13,20 +13,30 @@
             Name: <input type="text" name="name"
                         value="<%= heroInfo.name %>"><br>    
             Alias: <input type="text" name="alias"
-                        value="<%= heroInfo.alias %>"><br>    
+                        value="<%= heroInfo.alias %>"><br>
             Gender: <input type="radio" name="gender" value="F" 
-                         <%= heroInfo.sex == 'F'?"checked":"" %>
+                         <%= heroInfo.gender == 'F'?"checked":"" %>
                         >Female
                     <input type="radio" name="gender" value="M"
-                       <%= heroInfo.sex == 'M'?"checked":"" %>
-                    >Male
-                    
-            <input type="hidden" name="heroId" value="<%= heroInfo.heroId %>" > 
+                       <%= heroInfo.gender == 'M'?"checked":"" %>
+                    >Male <br>
+            Group: <input type="text" name="group"
+                        value="<%= heroInfo.group %>"> <br>
+            universe: <input type="text" name="universe"
+                        value="<%= heroInfo.universe %>"> <br>
+                        
+                        <input type="text" name="imageURL"
+                        value="<%= heroInfo.imageURL %>"> <br>
+                        
+                        <input type="text" name="information"
+                        value="<%= heroInfo.information %>"> <br>
             
-            <input type="text" name="imageURL" value="<%= heroInfo.heroId %>" >
+            <input type="hidden" name="heroId" value="<%= heroInfo.heroId %>"> 
+            
+
             <br>
             <figure>
-                <img src="<%= heroInfo.heroId %>" alt="Hero Image May Not be Available" >
+                <img src="<%= heroInfo.imageURL %>" alt="Hero Image May Not be Available" >
             </figure>
             
             <!--TODO: Add the remaining fields -->

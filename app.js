@@ -143,13 +143,16 @@ function updateHero(body){
           console.log("Connected!");
         
           let sql = `UPDATE heroes
-                      SET name   = ?, 
-                          alias  = ?, 
+                      SET name   = ?,
+                          alias  = ?,
                           gender = ?,
-                          group  = ?
-                     WHERE authorId = ?`;
+                          group  = ?,
+                        universe = ?,
+                        imageURL = ?,
+                        information = ?
+                    WHERE heroId = ?`;
         
-          let params = [body.name, body.alias, body.gender, body.group, body.heroId];
+          let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information, body.heroId];
         
           console.log(sql);
            
