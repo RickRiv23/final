@@ -1,15 +1,21 @@
-<!--//Administrators can generate at least three reports,-->
-<!--//which use aggregate functions (e.g., average price of all products in the table)	-->
-
-<!--number of heroes-->
-
- <div class="flex-container">
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Admin Reports </title>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/styles.css" type="text/css" />
+    </head>
+    <body>
+        
+         
+        <div class="flex-container">
             <% heroesList.forEach(function(hero){  %>
             
             
             <div class="hero-container js-select-hero" id="<%= hero.heroId %>">
                 <figure>
-                    <img class="thumbnail-img" src="<%= hero.imageURL %>" alt="Hero Image"/>
+                    <img class="thumbnail-img" src="<%=src="final/public/superheroes.jpg" %>" alt="Hero Image"/>
                     <figcaption>
                         <!--<a href="/updateAuthor?authorId=<%= %>">
                             [UPDATE]
@@ -18,10 +24,9 @@
                             [DELETE]
                         </a> 
                         <br>-->
-                        <p>Number of Heroes: <%= hero.heroId %></p>
-                        <p>Alias: <%= hero.alias %></p>
-                        <p>Universe: <%= hero.universe %></p>
-                        <p>Group: <%= hero.group %></p>
+                        <p>Total number of heroes: <%= hero.heroId %></p>
+                        <p><strong>NEED TO ADD AGG FUNCTION: <%= hero.alias %></p></strong>
+                        <p><strong>NEEDNEED TO ADD AGG FUNCTION: <%= hero.universe %></p></strong>
                     </figcaption>
                     <br>
                 </figure>
@@ -29,3 +34,12 @@
             
             <% }) %>
         </div>
+        
+        <form action="/admin">
+            <button>
+                Return to admin
+            </button>
+        </form>
+        
+    </body>
+</html>
