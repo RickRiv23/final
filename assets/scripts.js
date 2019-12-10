@@ -9,14 +9,24 @@ function selectHero(searchID){
         data: { "heroId": searchID},
         success: function(result,status) {
           //alert(result[0].firstName);
-          $("#heroName").html(result[0].name);
-          $("#group").html(result[0].group);
-          $("#heroImg").attr("src", result[0].imageURL);
-          $('#heroModal').modal("show");
-          
+          updateModal(result[0]);
         }
 
     });//ajax
+}
+
+function updateModal(hero){
+    $("#heroTitle").html(hero.name);
+    $("#heroName").html(hero.name);
+    $("#gender").html(hero.gender);
+    $("#alias").html(hero.alias);
+    $("#universe").html(hero.universe);
+    $("#group").html(hero.group);
+    $("#powers").html(hero.information);
+    $("#appearanceIssue").html(hero.comic_appeared);
+    $("#appearanceYear").html(hero.year_appeared);
+    $("#heroImg").attr("src", hero.imageURL);
+    $("#price").html(hero.price);
 }
 
 function searchHeroes(){
