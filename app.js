@@ -17,7 +17,11 @@ app.use(session({ secret: 'any word', cookie: { maxAge: 60000 }}))
 // }
 
 //routes
-app.get("/", function(req, res){
+app.get("/", async function(req, res){
+    res.render("index");
+});
+
+app.get("/login", function(req, res){
    res.render("login");
 });
 
@@ -28,7 +32,7 @@ app.get("/admin", async function(req, res){
    if (req.session.authenticated) { //if user hasn't authenticated, sending them to login screen
        
        let heroeList = await getSuperheroes();  
-       //console.log(authorList);
+       console.log(heroeList);
        res.render("admin", {"heroeList":heroeList});  
        
     // let authorList = await getAuthorList();  
@@ -76,8 +80,14 @@ app.post("/addHeroes", async function(req, res){
 
 
 app.get("/ajax/getHero", async function(req, res){
-    let rows = await getAuthorInfo(req.query.authorId);
-    console.log("Hero Info ")
+    let rows = await getHeroInfo(req.query.heroId);
+    console.log("Get Hero Info ")
+    res.send(rows);
+});
+
+app.get("/ajax/searchHero", async function(req, res){
+    let rows = await getHeroInfo(req.query);
+    console.log("Searched Heroes ")
     res.send(rows);
 });
 
@@ -98,7 +108,7 @@ app.get("/ajax/getHero", async function(req, res){
 //   }
 // });
 
-function getHeroInfo(heroID){
+function getHeroInfo(heroID){       //  Gets ALL hero info based on heroId
     let conn = dbConnection();
     
     return new Promise(function(resolve, reject){
@@ -106,8 +116,10 @@ function getHeroInfo(heroID){
            if (err) throw err;
            console.log("Connected!");
         
-           let sql = `SELECT *
-                        FROM heroes`;
+           let sql = `SELECT * FROM heroes 
+                    NATURAL JOIN hero_history
+                    NATURAL JOIN hero_prices
+                    WHERE heroId = ${heroID}`;
         
            conn.query(sql, function (err, rows, fields) {
               if (err) throw err;
@@ -119,6 +131,52 @@ function getHeroInfo(heroID){
         });//connect
     });//promis
     
+}
+
+function searchHeroes(query){
+    let keyword = query.searchTerm;
+    let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            
+            let params = [];
+            
+            let sql = 
+                `SELECT * FROM heroes 
+                NATURAL JOIN hero_history
+                NATURAL JOIN hero_prices
+                WHERE
+                (name OR alias LIKE '%${keyword}%'`;
+            
+            if (query.category) { //user selected a category
+                sql += " AND category = '" + query.category +"'"; //To prevent SQL injection, SQL statement shouldn't have any quotes.
+            }
+            
+            if (query.gender) { //user selected a sex
+                sql += " AND sex = '" + query.gender +"'"; //To prevent SQL injection, SQL statement shouldn't have any quotes.
+            }
+            
+            if (query.authorId) { //user selected a sex
+                sql += " AND authorId = " + query.authorId; //To prevent SQL injection, SQL statement shouldn't have any quotes.
+            }
+            
+            sql += ")";
+            
+            params.push(query.category);
+            params.push(query.gender);
+            params.push(query.authorId);
+            
+            conn.query(sql, params, function (err, rows, fields) {
+            if (err) throw err;
+            conn.end();
+            resolve(rows);
+            });
+        
+        });
+    });
 }
 
 function getSuperheroes(){

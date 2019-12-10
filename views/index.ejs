@@ -1,15 +1,56 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Admin Console </title>
+        <title> Heroes4Hire </title>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <link rel="stylesheet" href="/styles.css" type="text/css" />
     </head>
     <body>
-        <h3>Heroes:</h3>
+        <h1>Heroes4Hire:</h1>
+        
+        <form action="/ajax/searchHero">
+            <label for="searchTerm">
+                Keyword: <input id="searchTerm" name="searchTerm" type="text" >
+            </label>
+            <label>
+                Author: 
+                <select id="searchAuthor" name="author">
+                    <option value=""> Select One </option>
+                    
+                    <% authors.forEach(function(i){ %>
+                    
+                        <option value="<%=i.authorId%>"> <%=i.firstName%> <%=i.lastName%> </option>
+                    
+                    <% }); %>
+                    
+                </select>
+            </label>
+            <label>
+                Gender: 
+                <select id="searchGender" name="gender">
+                    <option value=""> Select One </option>
+                    <option value="M"> Male </option>
+                    <option value="F"> Female </option>
+                </select>
+            </label>
+            <label>
+                Category: 
+                <select id="searchCategory" name="category">
+                    <option value=""> Select One </option>
+                    
+                    <% categories.forEach(function(i){ %>
+                    
+                        <option value="<%=i.category%>"> <%=i.category%>  </option>
+                    
+                    <% }); %>
+                    
+                </select>
+            </label>
+            <input class="js-search-btn" type='submit' value='Search'>
+        </form>
          
-        <div class="flex-container">
+        <div class="flex-container js-heroes-container">
             <% heroeList.forEach(function(hero){  %>
             
             
