@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Admin Console </title>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <title> Admin </title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="/styles.css" type="text/css" />
     </head>
     <body>
@@ -55,15 +56,26 @@
               </div>
               <div class="modal-body">
                 
-                 <div>
-                     <figure>
-                        <img id="heroImg" src="">
-                        <figcaption>
-                            <h1 id="heroName"></h1>
-                            <p id="bio"></p>
-                        </figcaption>
-                    </figure>
-                </div>
+                 <figure class="hero-info flex-container">
+                     <div class="hero-info__img-wrapper">
+                        <img id="heroImg" class="hero-info__img" src="">
+                    </div>
+                    <figcaption>
+                        <div class="hero-info__text-wrapper">
+                            <p>Real Name: <span id="heroName"></span></p>
+                            <p>Alias: <span id="alias"></span></p>
+                            <p>Gender: <span id="gender"></span></p>
+                            <p>Powers: <span id="powers"></span></p>
+                        </div>
+                        <hr>
+                        <div class="hero-info__text-wrapper">
+                            <p>Universe Origin: <span id="universe"></span></p>
+                            <p>Affiliation: <span id="group"></span></p>
+                            <p>First Appearance: <span id="appearanceIssue"></span>, <span id="appearanceYear"></span></p>
+                        </div>
+                    </figcaption>
+                </figure>
+                <h3 class="hero-info__price"><span id="price"></span> Credits</h3>
                 
               </div>
               <div class="modal-footer">
