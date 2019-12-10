@@ -30,6 +30,7 @@ a, a:visited{
     text-decoration: none;
 }
 
+
 .hero-info{
     padding: 10px;
     text-align: left;
@@ -56,4 +57,39 @@ a, a:visited{
 
 .hero-info__price{
     float: right;
+}
+
+
+.hero-nav{
+    width: 100%;
+    float: left;
+    clear: both;
+    padding: 0px 20px;
+}
+.hero-nav__title{
+    float: left;
+}
+.hero-nav__item-wrapper{
+    margin: 0px auto;
+    width: 50%;
+    float: right;
+    list-style: none;
+    text-decoration: none;
+    display: inline-flex;
+}
+.hero-nav__item{
+    margin-right: 20px;
+}
+.hero-nav__item > a{
+    color: black;
+    transition: ease-in-out 0.3s;
+}
+.hero-nav__item > a:hover{
+    transform: scale(2);
+}
+
+.searchBar{
+    width: 100%;
+    float: left;
+    clear: both;
 }

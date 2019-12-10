@@ -26,6 +26,14 @@ app.get("/", async function(req, res){
     res.render("index", {"heroesList":heroesList});
 });
 
+app.get("/search", async function(req, res){
+    let heroesList = await getSuperheroes();
+    
+    console.log("Grabbing heroes");
+    
+    res.render("index", {"heroesList":heroesList});
+});
+
 //login route
 app.get("/login", function(req, res){
    res.render("login");
@@ -100,7 +108,6 @@ app.post("/addHeroes", async function(req, res){
     
 });
 
-
 app.get("/ajax/getHero", async function(req, res){
     let rows = await getHeroInfo(req.query.heroId);
     console.log("Get Hero Info ")
@@ -113,6 +120,58 @@ app.get("/ajax/searchHero", async function(req, res){
     console.log("Searched Heroes ")
     res.send(rows);
 });
+
+app.get("/updateHero", async function(req, res){
+    
+    let heroInfo = await getHeroInfo(req.query.heroId);
+    
+    res.render("updateHero", {"heroInfo":heroInfo});
+});
+
+app.post("/updateHero", async function(req, res){
+  let rows = await updateHero(req.body);
+  
+  let heroInfo = req.body;
+  console.log(rows);
+  //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
+  let message = "Hero WAS NOT updated!";
+  if (rows.affectedRows > 0) {
+      message= "Hero successfully updated!";
+  }
+  res.render("updateHero", {"message":message, "heroInfo":heroInfo});
+    
+});
+
+function updateHero(body){
+   
+  let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!");
+        
+          let sql = `UPDATE heroes
+                      SET name   = ?, 
+                          alias  = ?, 
+                          gender = ?,
+                          group  = ?
+                     WHERE authorId = ?`;
+        
+          let params = [body.name, body.alias, body.gender, body.group, body.heroId];
+        
+          console.log(sql);
+           
+          conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+        
+        });//connect
+    });//promise 
+}
 
 // app.get("/dataTest", async function(req, res){
     
@@ -270,8 +329,6 @@ function insertHero(body){
         });//connect
     });//promise 
 }
-
-
 
 function dbConnection(){
 
