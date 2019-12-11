@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <title> Admin Reports </title>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -10,29 +11,28 @@
         
          
         <div class="flex-container">
-            <% heroesList.forEach(function(hero){  %>
+        <script>
+        var obj = <%=heroAvg%>
+            w3.displayObject("demo", obj);
             
+        </script>
+
             
-            <div class="hero-container js-select-hero" id="<%= hero.heroId %>">
+            <div class="hero-container js-select-hero" id="<%= heroesList.heroId %>">
                 <figure>
-                    <img class="thumbnail-img" src="<%=src="final/public/superheroes.jpg" %>" alt="Hero Image"/>
+                    
                     <figcaption>
-                        <!--<a href="/updateAuthor?authorId=<%= %>">
-                            [UPDATE]
-                        </a>
-                        <a onclick="deleteConfirm()" class="removeAuthor" href="/deleteAuthor?authorId=<%=  %>">
-                            [DELETE]
-                        </a> 
-                        <br>-->
-                        <p>Total number of heroes: <%= hero.heroId %></p>
-                        <p><strong>NEED TO ADD AGG FUNCTION: <%= hero.alias %></p></strong>
-                        <p><strong>NEEDNEED TO ADD AGG FUNCTION: <%= hero.universe %></p></strong>
+
+
+                        <p><Strong>Total number of heroes: <%= heroesList.length %></p></Strong>
+                        <p><strong>Average cost of services:  $<%= heroAvg %>.00 </p></strong>
+                        <p><strong>Average age of hero (from appearance): <%= ageAvg %> years old</p></strong>
                     </figcaption>
                     <br>
                 </figure>
             </div>
             
-            <% }) %>
+           
         </div>
         
         <form action="/admin">
