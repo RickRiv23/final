@@ -96,7 +96,7 @@ function printCells(heroes){
         $(".js-heroes-container").append(heroes);
         
         //  Reinstantiate event listeners
-        $(".js-search-btn").on("click", function(e) {
+        $(document).on("click", ".js-search-btn", function(e) {
             e.preventDefault();
             searchHeroes();
         });
