@@ -122,18 +122,20 @@ app.get("/ajax/searchHero", async function(req, res){
 });
 
 app.get("/updateHero", async function(req, res){
-    
-    let heroInfo = await getHeroInfo(req.query.heroId);
-    let updateHero = await updateHero(req.query.heroId);
-    
-    res.render("updateHero", {"heroInfo":heroInfo});
+
+  let heroInfo = await getHeroInfo(req.query.heroId);
+//   console.log("hero info:")
+//   console.log(heroInfo);
+  res.render("updateHero", {"heroInfo":heroInfo});
 });
 
 app.post("/updateHero", async function(req, res){
-  let rows = await updateHero(req.body);
+  let rows = await updateHero(req.query.heroId, req.body);
   
   let heroInfo = req.body;
   console.log(rows);
+   console.log("hero info:")
+  console.log(heroInfo);
   //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
   let message = "Hero WAS NOT updated!";
   if (rows.affectedRows > 0) {
@@ -236,7 +238,7 @@ function deletePrice(heroId){
     });//promise 
 }
 
-function updateHero(body){
+function updateHero(heroId, body){
    
   let conn = dbConnection();
     
@@ -246,20 +248,18 @@ function updateHero(body){
           console.log("Connected!");
         
           let sql = `UPDATE heroes
-                      SET name   = ?,
-                          alias  = ?,
-                          gender = ?,
-                          group  = ?,
-                        universe = ?,
-                        imageURL = ?,
-                        information = ?
-                    WHERE heroId = ?`;
-        
-          let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information, body.heroId];
+                      SET name = ?, 
+                      alias = ?, 
+                      gender = ?,
+                      universe = ?
+                      WHERE heroId = ${heroId}`;
+          
+          console.log("hero ID: " + heroId);
+          let params = [body.name, body.alias, body.gender, body.universe, body.heroId];
         
           console.log(sql);
            
-          conn.query(sql, params, function (err, rows, fields) {
+          conn.query(sql,  params, function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
               conn.end();
