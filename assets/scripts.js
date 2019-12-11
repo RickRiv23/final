@@ -183,3 +183,7 @@ $(".empty-cart-btn").on("click", function(e) {
     }
     updateCart();
 });
+
+$(".js-cart-toggle").on("click", function(){
+    $(".shopping-cart").slideToggle();
+});
