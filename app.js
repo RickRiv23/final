@@ -417,10 +417,10 @@ function insertHero(body){
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO heroes
-                        (name,alias,gender,group,universe,imageURL,information)
-                         VALUES (?,?,?,?,?,?,?)`;
+                        (name,alias,gender,universe,imageURL,information)
+                         VALUES (?,?,?,?,?,?)`;
         
-          let params = [body.name, body.alias,body.group, body.gender, body.universe, body.imageURL, body.information];
+          let params = [body.name, body.alias, body.gender, body.universe, body.imageURL, body.information];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
