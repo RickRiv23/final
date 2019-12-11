@@ -49,10 +49,31 @@ app.get("/logout", function(req, res){
 //reports route
 app.get("/reports", async function(req, res){
     let heroesList = await getSuperheroesDESC();
+    let heroAvg = await getSuperheroesCOST();
+    let heroAvgAge = await getYoungestHero();
+
     console.log("going into reports.ejs")
+    console.log("herolist length in .get: ", heroesList.length);
+    console.log("herolist avg: ", heroAvg);
+    console.log("hero year avg: ", heroAvgAge);
+
+//get avg
+    let avgPrice = 0;
+    // let avgDrink = 0;
+    for(let i = 0; i < heroAvg.length; i++){
+        avgPrice += heroAvg[i].price;
+    }
+    avgPrice /= heroAvg.length;
+
+//get avgAge
+    let age = 0;
+    for(let i = 0; i < heroAvgAge.length; i++){
+        age += 2019-heroAvgAge[i].year_appeared;
+    }
+    age /= heroAvgAge.length;
     
     
-   res.render("reports", {"heroesList":heroesList});
+   res.render("reports", {"heroesList":heroesList , "heroAvg":avgPrice , "ageAvg": age.toFixed(0) });
 });
 
 app.get("/admin", async function(req, res){
@@ -421,7 +442,54 @@ function getSuperheroesDESC(){
         
            let sql = `SELECT *
                         FROM heroes
-                        ORDER BY heroId DESC LIMIT 1`;
+                        ORDER BY heroId`;
+
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+function getSuperheroesCOST(){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *
+                        FROM hero_prices`;
+                        
+
+           conn.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function getYoungestHero(){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `SELECT *
+                        FROM hero_history`;
+                        
 
            conn.query(sql, function (err, rows, fields) {
               if (err) throw err;
