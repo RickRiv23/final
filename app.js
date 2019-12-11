@@ -149,14 +149,13 @@ app.get("/updateHero", async function(req, res){
     
     let heroInfo = await getHeroInfo(req.query.heroId);
     
-    // console.log("hero info:")
-    // console.log(heroInfo);
-    
     res.render("updateHero", {"heroInfo":heroInfo});
 });
 
 app.post("/updateHero", async function(req, res){
   let rows = await updateHero(req.query.heroId, req.body);
+  let updatePrice = await updatePrice(req.query.heroId, req.body);
+  let updateHistory = await updateHistory(req.query.heroId, req.body);
   
   let heroInfo = req.body;
   console.log(rows);
@@ -183,7 +182,7 @@ function deleteHero(heroId){        // DELETES from heroes table
         
            let sql = `DELETE FROM heroes
                       WHERE heroId = ${heroId}`;
-        
+                      
            conn.query(sql, [heroId], function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
@@ -240,59 +239,6 @@ function deletePrice(heroId){
         });//connect
     });//promise 
 }
-
-function updateHero(heroId, body){
-   
-  let conn = dbConnection();
-    
-    return new Promise(function(resolve, reject){
-        conn.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!");
-        
-          let sql = `UPDATE heroes
-                      SET name = ?, 
-                      alias = ?, 
-                      gender = ?,
-                      universe = ?,
-                      imageURL = ?,
-                      information = ?
-                      WHERE heroId = ${heroId}`;
-          
-        //   console.log("hero ID: " + heroId);
-          let params = [body.name, body.alias, body.gender, body.universe, body.image, body.info, body.heroId];
-        
-          console.log(sql);
-           
-          conn.query(sql,  params, function (err, rows, fields) {
-              if (err) throw err;
-              //res.send(rows);
-              conn.end();
-              resolve(rows);
-          });
-        
-        });//connect
-    });//promise 
-}
-
-
-
-// app.get("/dataTest", async function(req, res){
-    
-//   console.log("authenticated: ", req.session.authenticated);    
-   
-//   if (req.session.authenticated) { //if user hasn't authenticated, sending them to login screen
-       
-//      let heroList = await getSuperheros();  
-//       //console.log(authorList);
-//       res.render("admin", {"heroList":heroList});  
-       
-//   }  else { 
-    
-//       res.render("login"); 
-   
-//   }
-// });
 
 function getHeroInfo(heroID){       //  Gets ALL hero info based on heroId
     let conn = dbConnection();
@@ -434,6 +380,40 @@ function insertHero(body){
     });//promise 
 }
 
+function updateHero(heroId, body){
+   
+  let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!");
+        
+          let sql = `UPDATE heroes
+                      SET name = ?, 
+                      alias = ?, 
+                      gender = ?,
+                      universe = ?,
+                      imageURL = ?,
+                      information = ?
+                      WHERE heroId = ${heroId}`;
+          
+        //   console.log("hero ID: " + heroId);
+          let params = [body.name, body.alias, body.gender, body.universe, body.image, body.info, body.heroId];
+        
+          console.log(sql);
+           
+          conn.query(sql,  params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+        
+        });//connect
+    });//promise 
+}
+
 function addHistory(body)
 {
      let conn = dbConnection();
@@ -446,6 +426,35 @@ function addHistory(body)
           let sql = `INSERT INTO hero_history
                         (year_appeared, comic_appeared, heroId)
                          VALUES (?,?,?)`;
+        
+          let params = [body.year_appeared, body.comic_appeared, body.heroId];
+        
+          conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+          console.log(sql);
+        
+        });//connect
+    });//promise 
+}
+
+function updateHistory(heroId, body)
+{
+     let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!: insertheroes");
+        
+          let sql = `UPDATE hero_history
+                        year_appeared = ?,
+                        comic_appeared = ?,
+                        heroId = ?
+                        WHERE heroId = ${heroId}`;
         
           let params = [body.year_appeared, body.comic_appeared, body.heroId];
         
@@ -483,6 +492,35 @@ function addPrice(body)
               resolve(rows);
           });
           console.log(sql);
+        
+        });//connect
+    });//promise 
+}
+
+function updatePrice(heroId, body){
+   
+  let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!");
+        
+          let sql = `UPDATE hero_prices
+                      SET price = ?
+                      WHERE heroId = ${heroId}`;
+          
+        //   console.log("hero ID: " + heroId);
+          let params = [body.price, body.heroId];
+        
+          console.log(sql);
+           
+          conn.query(sql,  params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
         
         });//connect
     });//promise 
