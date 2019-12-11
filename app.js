@@ -508,7 +508,6 @@ function addPrice(body)
               resolve(rows);
           });
           console.log(sql);
-<<<<<<<<< saved version
                         (year_appeared, comic_appeared, heroId)
                          VALUES (?,?,?)`;
         
@@ -550,18 +549,6 @@ function updateHistory(heroId, body)
               resolve(rows);
           });
           console.log(sql);
-        
-        });//connect
-    });//promise 
-}
-
-function addPrice(body)
-{
-      let conn = dbConnection();
-    
-=========
-
->>>>>>>>> local version
         
         });//connect
     });//promise 
