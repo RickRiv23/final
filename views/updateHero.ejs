@@ -39,16 +39,11 @@
                         value="<%= heroInfo.imageURL %>"><br>
             Info: <input type="text" name="info"
                         value="<%= heroInfo.information %>"><br>
+            Price: <input type="int" name="price"
+                        value="<%= heroInfo.price%>"><br>
                     
             <input type="hidden" name="heroId" value="<%= heroInfo.heroId %>"> 
             
-
-            <br>
-            <figure>
-                <img src="<%= heroInfo.imageURL %>" alt="Hero Image May Not be Available" >
-            </figure>
-            
-            <!--TODO: Add the remaining fields -->
             <br><br>
             <button>Update Hero</button>
         
@@ -56,6 +51,12 @@
             
         </form>        
 
+        <br>
+        <form action="/admin">
+            <button>
+                Return to admin
+            </button>
+        </form>
         
     </body>
 </html>

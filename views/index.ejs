@@ -24,7 +24,7 @@
         
         <form class="searchBar" action="/ajax/searchHero">
             <label for="searchTerm">
-                Keyword: <input id="searchTerm" name="searchTerm" type="text" >
+                Search Name: <input id="searchTerm" name="searchTerm" type="text" >
             </label>
             <label>
                 Universe: 
@@ -52,7 +52,7 @@
             <div class="hero-container js-select-hero" id="<%= hero.heroId %>" data-toggle="modal" data-target="#heroModal">
                 <figure>
                     <img class="thumbnail-img" src="<%= hero.imageURL %>" alt="Hero Image"/>
-                    <figcaption>
+                    <figcaption class="hero-container__text">
                         <p>Hero: <%= hero.name %></p>
                         <p>Alias: <%= hero.alias %></p>
                         <p>Universe: <%= hero.universe %></p>
