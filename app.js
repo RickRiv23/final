@@ -117,9 +117,9 @@ app.get("/addHeroes", function(req, res){
 });
 
 app.post("/addHeroes", async function(req, res){
-    let group = req.body.group ? req.body.group : "";
+    let group = req.body.group ? req.body.group : ""
     
-  let rows = await insertHero(req.body, group);
+  let rows = await insertHero(req.body);
   let insertHistory = await addHistory(req.body);
   let insertPrice = await addPrice(req.body);
   
@@ -486,10 +486,10 @@ function insertHero(body, group){
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO heroes
-                        (name,alias,gender,group,universe,imageURL,information)
-                         VALUES (?,?,?, ${group},?,?,?)`;
+                        (name,alias,gender,universe,imageURL,information)
+                         VALUES (?,?,?,?,?,?)`;
         
-          let params = [body.name, body.alias, body.gender, group, body.universe, body.imageURL, body.information];
+          let params = [body.name, body.alias, body.gender, body.universe, body.imageURL, body.information];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
