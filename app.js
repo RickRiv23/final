@@ -8,7 +8,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("assets")); //folder for images, css, js
 app.use(express.urlencoded()); //use to parse data sent using the POST method
-app.use(session({ secret: 'any word', cookie: { maxAge: 60000 }}))
+app.use(session({ secret: 'any word', cookie: { maxAge: 60000 }}));
 
 // app.use(myMiddleware);
 
@@ -98,6 +98,8 @@ app.get("/addHeroes", function(req, res){
 app.post("/addHeroes", async function(req, res){
   //res.render("newAuthor");
   let rows = await insertHero(req.body);
+  let insertHistory = await addHistory(req.body);
+  let insertPrice = await addPrice(req.body);
   console.log(rows);
   //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
   let message = "Hero WAS NOT added to the database!";
@@ -469,10 +471,64 @@ function insertHero(body){
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO heroes
-                        (name, alias, gender)
+                        (name, alias, gender,group,universe,imageURL, information)
+                         VALUES (?,?,?,?,?,?,?)`;
+        
+          let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information];
+        
+          conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+          console.log(sql);
+        
+        });//connect
+    });//promise 
+}
+
+function addHistory(body)
+{
+     let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!: insertheroes");
+        
+          let sql = `INSERT INTO hero_history
+                        (year_appeared, comic_appeared, heroID)
                          VALUES (?,?,?)`;
         
-          let params = [body.name, body.alias, body.gender];
+          let params = [body.year_appeared, body.comic_appeared, body.heroID];
+        
+          conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+          console.log(sql);
+        
+        });//connect
+    });//promise 
+}
+
+function addPrice(body)
+{
+      let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!: insertheroes");
+        
+          let sql = `INSERT INTO hero_prices
+                        (price)
+                         VALUES (?)`;
+        
+          let params = [body.price];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
