@@ -5,7 +5,7 @@
         <title> Admin Reports </title>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-       <meta http-equiv="Content-Security-Policy" content="img-src 'self' data:; default-src 'self' https://riri19-final.herokuapp.com/">
+       <meta http-equiv="Content-Security-Policy" content="img-src 'self' data:; default-src 'NONE' https://riri19-final.herokuapp.com/">
 
         <link rel="stylesheet" href="/styles.css" type="text/css" />
         
@@ -21,11 +21,7 @@
         
          
         <div class="flex-container">
-        <script>
-        var obj = <%=heroAvg%>
-            w3.displayObject("demo", obj);
-            
-        </script>
+      
 
             
             <div class="hero-container js-select-hero" id="<%= heroesList.heroId %>">
@@ -35,7 +31,7 @@
 
 
                         <p><Strong>Total number of heroes: <%= heroesList.length %></p></Strong>
-                        <p><strong>Average cost of services:  $<%= heroAvg %>.00 </p></strong>
+                        <p><strong>Average cost of services:  $<%= heroAvg %> </p></strong>
                         <p><strong>Average age of hero (from appearance): <%= ageAvg %> years old</p></strong>
                     </figcaption>
                     <br>

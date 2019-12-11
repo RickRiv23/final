@@ -49,10 +49,31 @@ app.get("/logout", function(req, res){
 //reports route
 app.get("/reports", async function(req, res){
     let heroesList = await getSuperheroesDESC();
+    let heroAvg = await getSuperheroesCOST();
+    let heroAvgAge = await getYoungestHero();
+
     console.log("going into reports.ejs")
+    console.log("herolist length in .get: ", heroesList.length);
+    console.log("herolist avg: ", heroAvg);
+    console.log("hero year avg: ", heroAvgAge);
+
+//get avg
+    let avgPrice = 0;
+    // let avgDrink = 0;
+    for(let i = 0; i < heroAvg.length; i++){
+        avgPrice += heroAvg[i].price;
+    }
+    avgPrice /= heroAvg.length;
+
+//get avgAge
+    let age = 0;
+    for(let i = 0; i < heroAvgAge.length; i++){
+        age += 2019-heroAvgAge[i].year_appeared;
+    }
+    age /= heroAvgAge.length;
     
     
-   res.render("reports", {"heroesList":heroesList});
+   res.render("reports", {"heroesList":heroesList , "heroAvg":avgPrice.toFixed(2) , "ageAvg": age.toFixed(0) });
 });
 
 app.get("/admin", async function(req, res){
@@ -149,6 +170,9 @@ app.get("/updateHero", async function(req, res){
     
     let heroInfo = await getHeroInfo(req.query.heroId);
     
+    // console.log("hero info:")
+    // console.log(heroInfo);
+    
     res.render("updateHero", {"heroInfo":heroInfo});
 });
 
@@ -180,7 +204,7 @@ function deleteHero(heroId){        // DELETES from heroes table
         
            let sql = `DELETE FROM heroes
                       WHERE heroId = ${heroId}`;
-                      
+        
            conn.query(sql, [heroId], function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
@@ -237,6 +261,59 @@ function deletePrice(heroId){
         });//connect
     });//promise 
 }
+
+function updateHero(heroId, body){
+   
+  let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!");
+        
+          let sql = `UPDATE heroes
+                      SET name = ?, 
+                      alias = ?, 
+                      gender = ?,
+                      universe = ?,
+                      imageURL = ?,
+                      information = ?
+                      WHERE heroId = ${heroId}`;
+          
+        //   console.log("hero ID: " + heroId);
+          let params = [body.name, body.alias, body.gender, body.universe, body.image, body.info, body.heroId];
+        
+          console.log(sql);
+           
+          conn.query(sql,  params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+        
+        });//connect
+    });//promise 
+}
+
+
+
+// app.get("/dataTest", async function(req, res){
+    
+//   console.log("authenticated: ", req.session.authenticated);    
+   
+//   if (req.session.authenticated) { //if user hasn't authenticated, sending them to login screen
+       
+//      let heroList = await getSuperheros();  
+//       //console.log(authorList);
+//       res.render("admin", {"heroList":heroList});  
+       
+//   }  else { 
+    
+//       res.render("login"); 
+   
+//   }
+// });
 
 function getHeroInfo(heroID){       //  Gets ALL hero info based on heroId
     let conn = dbConnection();
@@ -408,10 +485,10 @@ function insertHero(body){
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO heroes
-                        (name,alias,gender,universe,imageURL,information)
-                         VALUES (?,?,?,?,?,?)`;
+                        (name,alias,gender,group,universe,imageURL,information)
+                         VALUES (?,?,?,?,?,?,?)`;
         
-          let params = [body.name, body.alias, body.gender, body.universe, body.imageURL, body.information];
+          let params = [body.name, body.alias,body.group, body.gender, body.universe, body.imageURL, body.information];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
@@ -420,40 +497,6 @@ function insertHero(body){
               resolve(rows);
           });
           console.log(sql);
-        
-        });//connect
-    });//promise 
-}
-
-function updateHero(heroId, body){
-   
-  let conn = dbConnection();
-    
-    return new Promise(function(resolve, reject){
-        conn.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!");
-        
-          let sql = `UPDATE heroes
-                      SET name = ?, 
-                      alias = ?, 
-                      gender = ?,
-                      universe = ?,
-                      imageURL = ?,
-                      information = ?
-                      WHERE heroId = ${heroId}`;
-          
-        //   console.log("hero ID: " + heroId);
-          let params = [body.name, body.alias, body.gender, body.universe, body.image, body.info, body.heroId];
-        
-          console.log(sql);
-           
-          conn.query(sql,  params, function (err, rows, fields) {
-              if (err) throw err;
-              //res.send(rows);
-              conn.end();
-              resolve(rows);
-          });
         
         });//connect
     });//promise 
@@ -500,33 +543,6 @@ function addPrice(body)
                          VALUES (?)`;
         
           let params = [body.price];
-        
-          conn.query(sql, params, function (err, rows, fields) {
-              if (err) throw err;
-              //res.send(rows);
-              conn.end();
-              resolve(rows);
-          });
-        });//connect
-    });//promise 
-}
-
-function updateHistory(heroId, body)
-{
-     let conn = dbConnection();
-    
-    return new Promise(function(resolve, reject){
-        conn.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!: insertheroes");
-        
-          let sql = `UPDATE hero_history
-                        year_appeared = ?,
-                        comic_appeared = ?,
-                        heroId = ?
-                        WHERE heroId = ${heroId}`;
-        
-          let params = [body.year_appeared, body.comic_appeared, body.heroId];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
