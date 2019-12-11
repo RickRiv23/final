@@ -106,13 +106,15 @@ function add2Cart(heroId){
         data: { "heroId": heroId},
         success: function(data) {
             //   alert(JSON.stringify(data[0]));
-            var obj = data[0];
+            var hero = data[0];
             
-            if(cart.length === 0 || checkCart(obj.heroId) === undefined) {
-                cart.push({product: obj, quantity: 1});
+            // alert(checkCart(hero.heroId));
+            
+            if(cart.length === 0 || checkCart(hero.heroId) === undefined) {
+                cart.push({product: hero, quantity: 1});
             } else {
                 cart.forEach(function(item) {
-                    if(item.product.id === obj.heroId) {
+                    if(item.product.heroId === hero.heroId) {
                         item.quantity++;
                     }
                 });
@@ -129,15 +131,15 @@ let checkCart = function(prodId) {
 }
 
 let updateCart = function(){
-    cartList.innerHTML = "";
+    $(cartList).html("");
     
     cart.forEach(function(item) {
         let li = document.createElement("li");
-        li.innerHTML = `${item.quantity} ${item.product.alias} - $${item.product.price * item.quantity}`;
+        $(li).html(`${item.quantity} ${item.product.alias} - $${item.product.price * item.quantity}`);
         $(cartList).append(li);
     });
     
-    productQty.innerHTML = cart.length;
+    $(productQty).html(cart.length);
     
     generateCartButtons();
 }
@@ -146,7 +148,7 @@ let updateCart = function(){
     if(cart.length > 0) {
         $(emptyCart).show();
         $(cartCheckout).show();
-        $(totalPrice).html("$ " + calcTotalPrice());
+        $(totalPrice).html(calcTotalPrice() + " Credits");
     } else {
         $(emptyCart).hide();
         $(cartCheckout).hide();
