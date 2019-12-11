@@ -449,7 +449,7 @@ function insertHero(body){
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO heroes
-                        (name, alias, gender,group,universe,imageURL, information)
+                        (name,alias,gender,group,universe,imageURL,information)
                          VALUES (?,?,?,?,?,?,?)`;
         
           let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information];
@@ -476,10 +476,10 @@ function addHistory(body)
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO hero_history
-                        (year_appeared, comic_appeared, heroID)
+                        (year_appeared, comic_appeared, heroId)
                          VALUES (?,?,?)`;
         
-          let params = [body.year_appeared, body.comic_appeared, body.heroID];
+          let params = [body.year_appeared, body.comic_appeared, body.heroId];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
