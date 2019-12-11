@@ -100,6 +100,7 @@ app.post("/addHeroes", async function(req, res){
   let rows = await insertHero(req.body);
   let insertHistory = await addHistory(req.body);
   let insertPrice = await addPrice(req.body);
+  
   console.log(rows);
   //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
   let message = "Hero WAS NOT added to the database!";
@@ -416,10 +417,10 @@ function insertHero(body){
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO heroes
-                        (name, alias, gender,group,universe,imageURL, information)
+                        (name,alias,gender,group,universe,imageURL,information)
                          VALUES (?,?,?,?,?,?,?)`;
         
-          let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information];
+          let params = [body.name, body.alias,body.group, body.gender, body.universe, body.imageURL, body.information];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
@@ -443,10 +444,10 @@ function addHistory(body)
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO hero_history
-                        (year_appeared, comic_appeared, heroID)
+                        (year_appeared, comic_appeared, heroId)
                          VALUES (?,?,?)`;
         
-          let params = [body.year_appeared, body.comic_appeared, body.heroID];
+          let params = [body.year_appeared, body.comic_appeared, body.heroId];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
