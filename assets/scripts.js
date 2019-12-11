@@ -90,7 +90,6 @@ function printCells(heroes){
 /* Event Listeners */
 $(document).on("click", ".js-select-hero", function() {
     let heroID = $(this).attr("id");
-    alert(heroID);
     selectHero(heroID);
 });
 
@@ -101,5 +100,5 @@ $(".js-search-btn").on("click", function(e) {
 
 $(".js-atc").on('click', function() {
     let id = $(this).attr("data-hero");
-    alert(id);
+    
 });
