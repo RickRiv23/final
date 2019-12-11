@@ -49,31 +49,10 @@ app.get("/logout", function(req, res){
 //reports route
 app.get("/reports", async function(req, res){
     let heroesList = await getSuperheroesDESC();
-    let heroAvg = await getSuperheroesCOST();
-    let heroAvgAge = await getYoungestHero();
-
     console.log("going into reports.ejs")
-    console.log("herolist length in .get: ", heroesList.length);
-    console.log("herolist avg: ", heroAvg);
-    console.log("hero year avg: ", heroAvgAge);
-
-//get avg
-    let avgPrice = 0;
-    // let avgDrink = 0;
-    for(let i = 0; i < heroAvg.length; i++){
-        avgPrice += heroAvg[i].price;
-    }
-    avgPrice /= heroAvg.length;
-
-//get avgAge
-    let age = 0;
-    for(let i = 0; i < heroAvgAge.length; i++){
-        age += 2019-heroAvgAge[i].year_appeared;
-    }
-    age /= heroAvgAge.length;
     
     
-   res.render("reports", {"heroesList":heroesList , "heroAvg":avgPrice , "ageAvg": age.toFixed(0) });
+   res.render("reports", {"heroesList":heroesList});
 });
 
 app.get("/admin", async function(req, res){
@@ -175,8 +154,6 @@ app.get("/updateHero", async function(req, res){
 
 app.post("/updateHero", async function(req, res){
   let rows = await updateHero(req.query.heroId, req.body);
-  let updatePrice = await updatePrice(req.query.heroId, req.body);
-  let updateHistory = await updateHistory(req.query.heroId, req.body);
   
   let heroInfo = req.body;
   console.log(rows);
@@ -509,6 +486,46 @@ function addHistory(body)
     });//promise 
 }
 
+function addPrice(body)
+{
+      let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!: insertheroes");
+        
+          let sql = `INSERT INTO hero_prices
+                        (price)
+                         VALUES (?)`;
+        
+          let params = [body.price];
+        
+          conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+          console.log(sql);
+<<<<<<<<< saved version
+                        (year_appeared, comic_appeared, heroId)
+                         VALUES (?,?,?)`;
+        
+          let params = [body.year_appeared, body.comic_appeared, body.heroId];
+        
+          conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+          console.log(sql);
+        
+        });//connect
+    });//promise 
+}
+
 function updateHistory(heroId, body)
 {
      let conn = dbConnection();
@@ -542,53 +559,9 @@ function addPrice(body)
 {
       let conn = dbConnection();
     
-    return new Promise(function(resolve, reject){
-        conn.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!: insertheroes");
-        
-          let sql = `INSERT INTO hero_prices
-                        (price)
-                         VALUES (?)`;
-        
-          let params = [body.price];
-        
-          conn.query(sql, params, function (err, rows, fields) {
-              if (err) throw err;
-              //res.send(rows);
-              conn.end();
-              resolve(rows);
-          });
-          console.log(sql);
-        
-        });//connect
-    });//promise 
-}
+=========
 
-function updatePrice(heroId, body){
-   
-  let conn = dbConnection();
-    
-    return new Promise(function(resolve, reject){
-        conn.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!");
-        
-          let sql = `UPDATE hero_prices
-                      SET price = ?
-                      WHERE heroId = ${heroId}`;
-          
-        //   console.log("hero ID: " + heroId);
-          let params = [body.price, body.heroId];
-        
-          console.log(sql);
-           
-          conn.query(sql,  params, function (err, rows, fields) {
-              if (err) throw err;
-              //res.send(rows);
-              conn.end();
-              resolve(rows);
-          });
+>>>>>>>>> local version
         
         });//connect
     });//promise 
