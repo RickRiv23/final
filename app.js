@@ -124,6 +124,7 @@ app.get("/ajax/searchHero", async function(req, res){
 app.get("/updateHero", async function(req, res){
     
     let heroInfo = await getHeroInfo(req.query.heroId);
+    let updateHero = await updateHero(req.query.heroId);
     
     res.render("updateHero", {"heroInfo":heroInfo});
 });
