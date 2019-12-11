@@ -8,7 +8,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("assets")); //folder for images, css, js
 app.use(express.urlencoded()); //use to parse data sent using the POST method
-app.use(session({ secret: 'any word', cookie: { maxAge: 60000 }}))
+app.use(session({ secret: 'any word', cookie: { maxAge: 60000 }}));
 
 // app.use(myMiddleware);
 
@@ -119,6 +119,9 @@ app.get("/addHeroes", function(req, res){
 app.post("/addHeroes", async function(req, res){
   //res.render("newAuthor");
   let rows = await insertHero(req.body);
+  let insertHistory = await addHistory(req.body);
+  let insertPrice = await addPrice(req.body);
+  
   console.log(rows);
   //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
   let message = "Hero WAS NOT added to the database!";
@@ -142,27 +145,6 @@ app.get("/ajax/searchHero", async function(req, res){
     res.send(rows);
 });
 
-app.get("/updateHero", async function(req, res){
-    
-    let heroInfo = await getHeroInfo(req.query.heroId);
-    
-    res.render("updateHero", {"heroInfo":heroInfo});
-});
-
-app.post("/updateHero", async function(req, res){
-  let rows = await updateHero(req.body);
-  
-  let heroInfo = req.body;
-  console.log(rows);
-  //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
-  let message = "Hero WAS NOT updated!";
-  if (rows.affectedRows > 0) {
-      message= "Hero successfully updated!";
-  }
-  res.render("updateHero", {"message":message, "heroInfo":heroInfo});
-    
-});
-
 app.get("/ajax/deleteHero", async function(req, res){
     try{
         
@@ -182,6 +164,30 @@ app.get("/ajax/deleteHero", async function(req, res){
         console.log("Hero was unable to be deleted. Error - ");
         console.error(e);
     }
+});
+
+app.get("/updateHero", async function(req, res){
+    
+    let heroInfo = await getHeroInfo(req.query.heroId);
+    
+    // console.log("hero info:")
+    // console.log(heroInfo);
+    
+    res.render("updateHero", {"heroInfo":heroInfo});
+});
+
+app.post("/updateHero", async function(req, res){
+  let rows = await updateHero(req.query.heroId, req.body);
+  
+  let heroInfo = req.body;
+  console.log(rows);
+  //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
+  let message = "Hero WAS NOT updated!";
+  if (rows.affectedRows > 0) {
+      message= "Hero successfully updated!";
+  }
+  res.render("updateHero", {"message":message, "heroInfo":heroInfo});
+    
 });
 
 
@@ -256,7 +262,7 @@ function deletePrice(heroId){
     });//promise 
 }
 
-function updateHero(body){
+function updateHero(heroId, body){
    
   let conn = dbConnection();
     
@@ -266,20 +272,20 @@ function updateHero(body){
           console.log("Connected!");
         
           let sql = `UPDATE heroes
-                      SET name   = ?,
-                          alias  = ?,
-                          gender = ?,
-                          group  = ?,
-                        universe = ?,
-                        imageURL = ?,
-                        information = ?
-                    WHERE heroId = ?`;
-        
-          let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information, body.heroId];
+                      SET name = ?, 
+                      alias = ?, 
+                      gender = ?,
+                      universe = ?,
+                      imageURL = ?,
+                      information = ?
+                      WHERE heroId = ${heroId}`;
+          
+        //   console.log("hero ID: " + heroId);
+          let params = [body.name, body.alias, body.gender, body.universe, body.image, body.info, body.heroId];
         
           console.log(sql);
            
-          conn.query(sql, params, function (err, rows, fields) {
+          conn.query(sql,  params, function (err, rows, fields) {
               if (err) throw err;
               //res.send(rows);
               conn.end();
@@ -290,39 +296,6 @@ function updateHero(body){
     });//promise 
 }
 
-// function deleteHero(body) {
-//     let conn = dbConnection();
-    
-//         return new Promise(function(resolve, reject){
-//         conn.connect(function(err) {
-//           if (err) throw err;
-//           console.log("Connected!");
-        
-//           let sql = `UPDATE heroes
-//                       SET name   = ?, 
-//                           alias  = ?, 
-//                           gender = ?,
-//                           group  = ?
-//                           universe = ?,
-//                           imageURL = ?,
-//                           information = ?,
-//                      WHERE heroId = ?`;
-        
-//           let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information, body.heroId];
-        
-//           console.log(sql);
-           
-//           conn.query(sql, params, function (err, rows, fields) {
-//               if (err) throw err;
-//               //res.send(rows);
-//               conn.end();
-//               resolve(rows);
-//           });//query
-    
-    
-// }); //connect
-// }); //promise
-// }//func
 
 
 // app.get("/dataTest", async function(req, res){
@@ -512,10 +485,64 @@ function insertHero(body){
           console.log("Connected!: insertheroes");
         
           let sql = `INSERT INTO heroes
-                        (name, alias, gender)
+                        (name,alias,gender,group,universe,imageURL,information)
+                         VALUES (?,?,?,?,?,?,?)`;
+        
+          let params = [body.name, body.alias,body.group, body.gender, body.universe, body.imageURL, body.information];
+        
+          conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+          console.log(sql);
+        
+        });//connect
+    });//promise 
+}
+
+function addHistory(body)
+{
+     let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!: insertheroes");
+        
+          let sql = `INSERT INTO hero_history
+                        (year_appeared, comic_appeared, heroId)
                          VALUES (?,?,?)`;
         
-          let params = [body.name, body.alias, body.gender];
+          let params = [body.year_appeared, body.comic_appeared, body.heroId];
+        
+          conn.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+          });
+          console.log(sql);
+        
+        });//connect
+    });//promise 
+}
+
+function addPrice(body)
+{
+      let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+          if (err) throw err;
+          console.log("Connected!: insertheroes");
+        
+          let sql = `INSERT INTO hero_prices
+                        (price)
+                         VALUES (?)`;
+        
+          let params = [body.price];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;

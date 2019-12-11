@@ -1,5 +1,17 @@
 /*global $*/
 
+
+//  For cart
+var cart = [];
+const productsEl = $(".products"),
+    cartList = $(".shopping-cart-list"),
+    productQty = $(".product-quantity"),
+    emptyCart = $(".empty-cart-btn"),
+    cartCheckout = $(".cart-checkout"),
+    totalPrice = $(".total-price");
+    
+    
+
 /* Functions */
 function selectHero(searchID){
     $.ajax({
@@ -27,6 +39,8 @@ function updateModal(hero){
     $("#appearanceYear").html(hero.year_appeared);
     $("#heroImg").attr("src", hero.imageURL);
     $("#price").html(hero.price);
+    
+    $(".js-atc").attr("data-hero", hero.heroId);
 }
 
 function searchHeroes(){
@@ -84,14 +98,92 @@ function printCells(heroes){
     // });
 }
 
+function add2Cart(heroId){
+    $.ajax({
+        method: "GET",
+        url: "/ajax/getHero",
+        dataType: "json",
+        data: { "heroId": heroId},
+        success: function(data) {
+            //   alert(JSON.stringify(data[0]));
+            var hero = data[0];
+            
+            // alert(checkCart(hero.heroId));
+            
+            if(cart.length === 0 || checkCart(hero.heroId) === undefined) {
+                cart.push({product: hero, quantity: 1});
+            } else {
+                cart.forEach(function(item) {
+                    if(item.product.heroId === hero.heroId) {
+                        item.quantity++;
+                    }
+                });
+            }
+            updateCart();
+        }
+
+    });//ajax
+}
+let checkCart = function(prodId) {
+    return cart.find(function(item) {
+        return item.product.heroId === prodId;
+    });
+}
+
+let updateCart = function(){
+    $(cartList).html("");
+    
+    cart.forEach(function(item) {
+        let li = document.createElement("li");
+        $(li).html(`${item.quantity} ${item.product.alias} - $${item.product.price * item.quantity}`);
+        $(cartList).append(li);
+    });
+    
+    $(productQty).html(cart.length);
+    
+    generateCartButtons();
+}
+
+ let generateCartButtons = function(){
+    if(cart.length > 0) {
+        $(emptyCart).show();
+        $(cartCheckout).show();
+        $(totalPrice).html(calcTotalPrice() + " Credits");
+    } else {
+        $(emptyCart).hide();
+        $(cartCheckout).hide();
+    }
+}
+ let calcTotalPrice = function(){
+    return cart.reduce(function(total, item) {
+      return total + (item.product.price *  item.quantity);
+    }, 0);
+}
+
 
 /* Event Listeners */
-$(document).on("click", ".js-select-hero", function(){
+$(document).on("click", ".js-select-hero", function() {
     let heroID = $(this).attr("id");
     selectHero(heroID);
 });
 
-$(".js-search-btn").on("click", function(e){
+$(".js-search-btn").on("click", function(e) {
     e.preventDefault();
     searchHeroes();
+});
+
+$(".js-atc").on('click', function() {
+    let id = $(this).attr("data-hero");
+    add2Cart(id);
+});
+
+$(".empty-cart-btn").on("click", function(e) {
+    if(confirm("Are you sure?")) {
+        cart = [];
+    }
+    updateCart();
+});
+
+$(".js-cart-toggle").on("click", function(){
+    $(".shopping-cart").slideToggle();
 });
