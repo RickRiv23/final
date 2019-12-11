@@ -96,10 +96,17 @@ function printCells(heroes){
         $(".js-heroes-container").append(heroes);
         
         //  Reinstantiate event listeners
-        $(".js-heroes-container").on("click", ".js-search-btn", function(e) {
-            e.preventDefault();
-            searchHeroes();
+        let heroList = document.querySelectorAll(".js-search-btn");
+        heroList.forEach(function(hero){
+            hero.addEventListener("click", function(e){
+                e.preventDefault();
+                searchHeroes();
+            });
         });
+        // $(".js-heroes-container").on("click", ".js-search-btn", function(e) {
+        //     e.preventDefault();
+        //     searchHeroes();
+        // });
 }
 
 function add2Cart(heroId){
