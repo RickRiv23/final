@@ -9,7 +9,7 @@
 
 .hero-container{
     width: 200px;
-    background-color: grey;
+    background-color: lightgrey;
     border-radius: 5px;
     padding: 10px;
     margin-right: 20px;
@@ -19,6 +19,8 @@
 
 .thumbnail-img{
     width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 figcaption, figure{
@@ -30,6 +32,9 @@ a, a:visited{
     text-decoration: none;
 }
 
+.hero-container__text > p{
+    margin-bottom: 2px;
+}
 
 .hero-info{
     padding: 10px;
@@ -65,6 +70,7 @@ a, a:visited{
     float: left;
     clear: both;
     padding: 0px 20px;
+    margin: 10px auto;
 }
 .hero-nav__title{
     float: left;
@@ -94,6 +100,12 @@ a, a:visited{
     width: 100%;
     float: left;
     clear: both;
+    padding: 0px 20px;
+    margin: 10px auto;
+}
+
+.searchBar > label{
+    margin-right: 20px;
 }
 
 /*    Cart Styles   */
@@ -113,7 +125,7 @@ a, a:visited{
   width: 300px;
   min-heigh: 300px;
   margin-right: 20px;
-  margin-top: 10px;
+  margin-top: 20px;
   padding: 20px;
   background: lightgrey;
   display: none;

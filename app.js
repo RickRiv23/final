@@ -507,20 +507,6 @@ function addPrice(body)
               conn.end();
               resolve(rows);
           });
-          console.log(sql);
-                        (year_appeared, comic_appeared, heroId)
-                         VALUES (?,?,?)`;
-        
-          let params = [body.year_appeared, body.comic_appeared, body.heroId];
-        
-          conn.query(sql, params, function (err, rows, fields) {
-              if (err) throw err;
-              //res.send(rows);
-              conn.end();
-              resolve(rows);
-          });
-          console.log(sql);
-        
         });//connect
     });//promise 
 }
