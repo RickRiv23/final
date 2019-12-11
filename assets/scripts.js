@@ -33,7 +33,6 @@ function searchHeroes(){
     let keyword = $("#searchTerm").val() ? $("#searchTerm").val() : "";
     let universe = $("#searchUniverse").val() ? $("#searchUniverse").val() : "";
     let gender = $("#searchGender").val() ? $("#searchGender").val() : "";
-    let author = $("#searchAuthor").val() ? $("#searchAuthor").val() : "";
     $.ajax({
         method: "GET",
         url: "/ajax/searchHero",
@@ -41,8 +40,7 @@ function searchHeroes(){
         data:{
             "searchTerm": keyword,
             "universe": universe,
-            "gender": gender,
-            "authorId": author
+            "gender": gender
         },
         success: function(data){
             // alert(JSON.stringify(data));

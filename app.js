@@ -176,7 +176,7 @@ function deleteHero(heroId){        // DELETES from heroes table
            console.log("Connected!");
         
            let sql = `DELETE FROM heroes
-                      WHERE heroId = ?`;
+                      WHERE heroId = ${heroId}`;
         
            conn.query(sql, [heroId], function (err, rows, fields) {
               if (err) throw err;
@@ -199,7 +199,7 @@ function deleteHistory(heroId){
            console.log("Connected!");
         
            let sql = `DELETE FROM hero_history
-                      WHERE heroId = ?`;
+                      WHERE heroId = ${heroId}`;
         
            conn.query(sql, [heroId], function (err, rows, fields) {
               if (err) throw err;
@@ -222,7 +222,7 @@ function deletePrice(heroId){
            console.log("Connected!");
         
            let sql = `DELETE FROM hero_prices
-                      WHERE heroId = ?`;
+                      WHERE heroId = ${heroId}`;
         
            conn.query(sql, [heroId], function (err, rows, fields) {
               if (err) throw err;
