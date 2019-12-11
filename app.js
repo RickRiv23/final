@@ -123,7 +123,6 @@ app.get("/ajax/searchHero", async function(req, res){
     res.send(rows);
 });
 
-<<<<<<< HEAD
 app.get("/updateHero", async function(req, res){
 
   let heroInfo = await getHeroInfo(req.query.heroId);
@@ -148,8 +147,6 @@ app.post("/updateHero", async function(req, res){
     
 });
 
-=======
->>>>>>> 030a889f010675a6be0286255e931aa68700de21
 app.get("/ajax/deleteHero", async function(req, res){
     try{
         
@@ -179,7 +176,7 @@ app.get("/updateHero", async function(req, res){
 });
 
 app.post("/updateHero", async function(req, res){
-  let rows = await updateHero(req.body);
+  let rows = await updateHero(req.query.heroId, req.body);
   
   let heroInfo = req.body;
   console.log(rows);
