@@ -142,6 +142,99 @@ app.post("/updateHero", async function(req, res){
     
 });
 
+app.get("/ajax/deleteHero", async function(req, res){
+    try{
+        
+        let removeHero = await deleteHero(req.query.heroID);        //  REQUIRES heroID as a parameter
+        let removeHistory = await deleteHistory(req.query.heroID);
+        let removePrice = await deletePrice(req.query.heroID);
+        
+        if(removeHero && removeHistory && removePrice){
+            let heroesList = await getSuperheroes();  
+            console.log("Hero deleted.");
+            res.render("admin", {"heroesList":heroesList});         //  SUCCESSFUL delete
+        } else{
+            console.log("Hero was unable to be deleted.");
+        }
+        
+    } catch(e){
+        console.log("Hero was unable to be deleted. Error - ");
+        console.error(e);
+    }
+});
+
+
+/*  FUNCTIONS   */
+
+function deleteHero(heroId){        // DELETES from heroes table
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `DELETE FROM heroes
+                      WHERE heroId = ?`;
+        
+           conn.query(sql, [heroId], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function deleteHistory(heroId){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `DELETE FROM hero_history
+                      WHERE heroId = ?`;
+        
+           conn.query(sql, [heroId], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
+function deletePrice(heroId){
+   
+   let conn = dbConnection();
+    
+    return new Promise(function(resolve, reject){
+        conn.connect(function(err) {
+           if (err) throw err;
+           console.log("Connected!");
+        
+           let sql = `DELETE FROM hero_prices
+                      WHERE heroId = ?`;
+        
+           conn.query(sql, [heroId], function (err, rows, fields) {
+              if (err) throw err;
+              //res.send(rows);
+              conn.end();
+              resolve(rows);
+           });
+        
+        });//connect
+    });//promise 
+}
+
 function updateHero(body){
    
   let conn = dbConnection();
