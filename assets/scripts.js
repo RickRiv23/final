@@ -27,6 +27,8 @@ function updateModal(hero){
     $("#appearanceYear").html(hero.year_appeared);
     $("#heroImg").attr("src", hero.imageURL);
     $("#price").html(hero.price);
+    
+    $(".js-atc").attr("data-hero", hero.heroId);
 }
 
 function searchHeroes(){
@@ -86,12 +88,17 @@ function printCells(heroes){
 
 
 /* Event Listeners */
-$(document).on("click", ".js-select-hero", function(){
+$(document).on("click", ".js-select-hero", e => {
     let heroID = $(this).attr("id");
     selectHero(heroID);
 });
 
-$(".js-search-btn").on("click", function(e){
+$(".js-search-btn").on("click", e => {
     e.preventDefault();
     searchHeroes();
+});
+
+$(".js-atc").on('click', e => {
+    let id = $(this).attr("data-hero");
+    alert(id);
 });
