@@ -93,9 +93,13 @@ function buildCells(heroes){
 }
 
 function printCells(heroes){
-    // quotes.forEach( function(i, quote){
         $(".js-heroes-container").append(heroes);
-    // });
+        
+        //  Reinstantiate event listeners
+        $(".js-search-btn").on("click", function(e) {
+            e.preventDefault();
+            searchHeroes();
+        });
 }
 
 function add2Cart(heroId){
