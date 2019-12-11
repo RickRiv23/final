@@ -253,11 +253,13 @@ function updateHero(heroId, body){
                       SET name = ?, 
                       alias = ?, 
                       gender = ?,
-                      universe = ?
+                      universe = ?,
+                      imageURL = ?,
+                      information = ?
                       WHERE heroId = ${heroId}`;
           
-          console.log("hero ID: " + heroId);
-          let params = [body.name, body.alias, body.gender, body.universe, body.heroId];
+        //   console.log("hero ID: " + heroId);
+          let params = [body.name, body.alias, body.gender, body.universe, body.image, body.info, body.heroId];
         
           console.log(sql);
            
