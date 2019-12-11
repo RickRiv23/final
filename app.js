@@ -100,6 +100,7 @@ app.post("/addHeroes", async function(req, res){
   let rows = await insertHero(req.body);
   let insertHistory = await addHistory(req.body);
   let insertPrice = await addPrice(req.body);
+  
   console.log(rows);
   //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
   let message = "Hero WAS NOT added to the database!";
@@ -419,7 +420,7 @@ function insertHero(body){
                         (name,alias,gender,group,universe,imageURL,information)
                          VALUES (?,?,?,?,?,?,?)`;
         
-          let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information];
+          let params = [body.name, body.alias,body.group, body.gender, body.universe, body.imageURL, body.information];
         
           conn.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
