@@ -274,39 +274,6 @@ function updateHero(heroId, body){
     });//promise 
 }
 
-// function deleteHero(body) {
-//     let conn = dbConnection();
-    
-//         return new Promise(function(resolve, reject){
-//         conn.connect(function(err) {
-//           if (err) throw err;
-//           console.log("Connected!");
-        
-//           let sql = `UPDATE heroes
-//                       SET name   = ?, 
-//                           alias  = ?, 
-//                           gender = ?,
-//                           group  = ?
-//                           universe = ?,
-//                           imageURL = ?,
-//                           information = ?,
-//                      WHERE heroId = ?`;
-        
-//           let params = [body.name, body.alias, body.gender, body.group, body.universe, body.imageURL, body.information, body.heroId];
-        
-//           console.log(sql);
-           
-//           conn.query(sql, params, function (err, rows, fields) {
-//               if (err) throw err;
-//               //res.send(rows);
-//               conn.end();
-//               resolve(rows);
-//           });//query
-    
-    
-// }); //connect
-// }); //promise
-// }//func
 
 
 // app.get("/dataTest", async function(req, res){
