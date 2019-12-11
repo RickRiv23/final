@@ -123,30 +123,6 @@ app.get("/ajax/searchHero", async function(req, res){
     res.send(rows);
 });
 
-app.get("/updateHero", async function(req, res){
-
-  let heroInfo = await getHeroInfo(req.query.heroId);
-//   console.log("hero info:")
-//   console.log(heroInfo);
-  res.render("updateHero", {"heroInfo":heroInfo});
-});
-
-app.post("/updateHero", async function(req, res){
-  let rows = await updateHero(req.query.heroId, req.body);
-  
-  let heroInfo = req.body;
-  console.log(rows);
-   console.log("hero info:")
-  console.log(heroInfo);
-  //res.send("First name: " + req.body.firstName); //When using the POST method, the form info is stored in req.body
-  let message = "Hero WAS NOT updated!";
-  if (rows.affectedRows > 0) {
-      message= "Hero successfully updated!";
-  }
-  res.render("updateHero", {"message":message, "heroInfo":heroInfo});
-    
-});
-
 app.get("/ajax/deleteHero", async function(req, res){
     try{
         
@@ -171,6 +147,9 @@ app.get("/ajax/deleteHero", async function(req, res){
 app.get("/updateHero", async function(req, res){
     
     let heroInfo = await getHeroInfo(req.query.heroId);
+    
+    // console.log("hero info:")
+    // console.log(heroInfo);
     
     res.render("updateHero", {"heroInfo":heroInfo});
 });
