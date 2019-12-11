@@ -1,5 +1,17 @@
 /*global $*/
 
+
+//  For cart
+var cart = [];
+const productsEl = $(".products"),
+    cartList = $(".shopping-cart-list"),
+    productQty = $(".product-quantity"),
+    emptyCart = $(".empty-cart-btn"),
+    cartCheckout = $(".cart-checkout"),
+    totalPrice = $(".total-price");
+    
+    
+
 /* Functions */
 function selectHero(searchID){
     $.ajax({
@@ -86,6 +98,66 @@ function printCells(heroes){
     // });
 }
 
+function add2Cart(heroId){
+    $.ajax({
+        method: "GET",
+        url: "/ajax/getHero",
+        dataType: "json",
+        data: { "heroId": heroId},
+        success: function(data) {
+            //   alert(JSON.stringify(data[0]));
+            var obj = data[0];
+            
+            if(cart.length === 0 || checkCart(obj.heroId) === undefined) {
+                cart.push({product: obj, quantity: 1});
+            } else {
+                cart.forEach(function(item) {
+                    if(item.product.id === obj.heroId) {
+                        item.quantity++;
+                    }
+                });
+            }
+            updateCart();
+        }
+
+    });//ajax
+}
+let checkCart = function(prodId) {
+    return cart.find(function(item) {
+        return item.product.heroId === prodId;
+    });
+}
+
+let updateCart = function(){
+    cartList.innerHTML = "";
+    
+    cart.forEach(function(item) {
+        let li = document.createElement("li");
+        li.innerHTML = `${item.quantity} ${item.product.alias} - $${item.product.price * item.quantity}`;
+        $(cartList).append(li);
+    });
+    
+    productQty.innerHTML = cart.length;
+    
+    generateCartButtons();
+}
+
+ let generateCartButtons = function(){
+    if(cart.length > 0) {
+        $(emptyCart).show();
+        $(cartCheckout).show();
+        $(totalPrice).html("$ " + calcTotalPrice());
+    } else {
+        $(emptyCart).hide();
+        $(cartCheckout).hide();
+    }
+}
+ let calcTotalPrice = function(){
+    return cart.reduce(function(total, item) {
+      return total + (item.product.price *  item.quantity);
+    }, 0);
+}
+
 
 /* Event Listeners */
 $(document).on("click", ".js-select-hero", function() {
@@ -100,5 +172,12 @@ $(".js-search-btn").on("click", function(e) {
 
 $(".js-atc").on('click', function() {
     let id = $(this).attr("data-hero");
-    
+    add2Cart(id);
+});
+
+$(".empty-cart-btn").on("click", function(e) {
+    if(confirm("Are you sure?")) {
+        cart = [];
+    }
+    updateCart();
 });
